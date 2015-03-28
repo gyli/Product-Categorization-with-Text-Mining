@@ -36,7 +36,7 @@ leaf_cat_list = {}
 
 api = amazonproduct.API(locale='us')
 # Initialize the starting keywords
-keywordlist = ['amazon', 'chinese', 'large', 'apple', 'hp', 'bag', 'man', 'women', 'kid', 'rocket', 'pet', 'car',
+keywordlist = ['watch', 'Amazonbasic', 'large', 'cushion', 'pad', 'bag', 'man', 'women', 'kid', 'rocket', 'pet', 'car',
                'office', 'face', 'leg', 'home', 'cleaning', 'food', 'fruit', 'outdoor', 'indoor', 'usa', 'china',
                'business', 'TV', 'key', 'rome', 'english', 'map', 'math', 'computer', 'kitchen', 'pet', 'Gift',
                'Beauty', 'Philips', 'Appliances', 'Accessories', 'american']
