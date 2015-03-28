@@ -4,7 +4,7 @@
 # https://bitbucket.org/basti/python-amazon-product-api
 import amazonproduct
 # https://github.com/ligyxy/MySQLTool
-from DB import DB
+from DictMySQLdb import DictMySQLdb
 import random
 import time
 
@@ -29,7 +29,7 @@ class IdCache:
             return id_db
 
 
-pd_db = DB(user='root', passwd='', host='127.0.0.1', db='product')
+pd_db = DictMySQLdb(user='root', passwd='', host='127.0.0.1', db='product')
 cache = IdCache(pd_db)
 root_cat_list = {}
 leaf_cat_list = {}
