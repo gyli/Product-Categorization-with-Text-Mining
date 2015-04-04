@@ -31,8 +31,6 @@ class IdCache:
 
 pd_db = DictMySQLdb(user='root', passwd='', host='127.0.0.1', db='product')
 cache = IdCache(pd_db)
-root_cat_list = {}
-leaf_cat_list = {}
 
 api = amazonproduct.API(locale='us')
 # Initialize the starting keywords
@@ -82,24 +80,16 @@ while True:
             pd_cat = unicode(item.ItemAttributes.ProductGroup)
             result.append(pd_asin)
             if pd_asin and pd_title and pd_cat:
-                # pd_root_cat_id & pd_leaf_cat_id is the cache for categories with their ids
-                # We assume the leaf categories are unique
-                if root_cat_list.get(pd_cat) and leaf_cat_list.get(pd_cat):
-                    pd_root_cat_id = root_cat_list.get(pd_cat)
-                    pd_leaf_cat_id = leaf_cat_list.get(pd_cat)
                 # If not in cache, get the id through browsenode API and store them into cache
+                cat_id = get_cat_id(pd_asin)
+                if cat_id:
+                    pd_root_cat_id = cat_id.get('root')
+                    pd_leaf_cat_id = cat_id.get('leaf')
+                    print 'Get ids through API'
+                # Skip it if no category id returns
                 else:
-                    cat_id = get_cat_id(pd_asin)
-                    if cat_id:
-                        pd_root_cat_id = cat_id.get('root')
-                        pd_leaf_cat_id = cat_id.get('leaf')
-                        root_cat_list[pd_cat] = pd_root_cat_id
-                        leaf_cat_list[pd_cat] = pd_leaf_cat_id
-                        print 'Get ids through API'
-                    # Skip it if no category id returns
-                    else:
-                        print 'Skip this one'
-                        continue
+                    print 'Skip this one'
+                    continue
                 if pd_root_cat_id and pd_leaf_cat_id:
                     value_list.append((pd_asin, pd_title, pd_leaf_cat_id, pd_root_cat_id))
         if value_list:
