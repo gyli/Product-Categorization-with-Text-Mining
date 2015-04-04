@@ -73,6 +73,9 @@ def get_cat_id(pd_asin):
 while True:
     result = []
     value_list = []
+    # Assume the similar search will return product in same root category
+    root_cat_list = {}
+    leaf_cat_list = {}
     try:
         for item in api.item_search('All', Keywords=keyword):
             pd_asin = unicode(item.ASIN)
@@ -80,16 +83,25 @@ while True:
             pd_cat = unicode(item.ItemAttributes.ProductGroup)
             result.append(pd_asin)
             if pd_asin and pd_title and pd_cat:
+                # pd_root_cat_id & pd_leaf_cat_id is the cache for categories with their ids
+                # We assume the leaf categories are unique
+                if root_cat_list.get(pd_cat) and leaf_cat_list.get(pd_cat):
+                    pd_root_cat_id = root_cat_list.get(pd_cat)
+                    pd_leaf_cat_id = leaf_cat_list.get(pd_cat)
+                    print 'Get ids from cache'
                 # If not in cache, get the id through browsenode API and store them into cache
-                cat_id = get_cat_id(pd_asin)
-                if cat_id:
-                    pd_root_cat_id = cat_id.get('root')
-                    pd_leaf_cat_id = cat_id.get('leaf')
-                    print 'Get ids through API'
-                # Skip it if no category id returns
                 else:
-                    print 'Skip this one'
-                    continue
+                    cat_id = get_cat_id(pd_asin)
+                    if cat_id:
+                        pd_root_cat_id = cat_id.get('root')
+                        pd_leaf_cat_id = cat_id.get('leaf')
+                        root_cat_list[pd_cat] = pd_root_cat_id
+                        leaf_cat_list[pd_cat] = pd_leaf_cat_id
+                        print 'Get ids through API'
+                    # Skip it if no category id returns
+                    else:
+                        print 'Cannot get root category'
+                        continue
                 if pd_root_cat_id and pd_leaf_cat_id:
                     value_list.append((pd_asin, pd_title, pd_leaf_cat_id, pd_root_cat_id))
         if value_list:
