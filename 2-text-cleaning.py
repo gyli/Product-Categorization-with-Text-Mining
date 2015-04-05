@@ -8,7 +8,7 @@ import nltk
 from nltk.stem.porter import PorterStemmer
 from nltk.tokenize import RegexpTokenizer
 import pandas as pd
-import pickle
+import cPickle as pickle
 
 
 # Get the production title from database
@@ -57,13 +57,13 @@ corpus_lsi = lsi[corpus_tfidf]
 index = similarities.MatrixSimilarity(lsi[corpus])
 
 # Save the LSI model and the similarity matrix
-pickle.dump(lsi, open("lsi.obj", "w"))
-pickle.dump(index, open("ind.obj", "w"))
-pickle.dump(dictionary, open("dictionary.obj", "w"))
-pickle.dump(product_category['cat_name'], open("cat_list.obj", "w"))
+pickle.dump(lsi, open("lsi.obj", "w"), True)
+pickle.dump(index, open("ind.obj", "w"), True)
+pickle.dump(dictionary, open("dictionary.obj", "w"), True)
+pickle.dump(product_category['cat_name'], open("cat_list.obj", "w"), True)
 
 # Input the new text
-query = "iPhone 6 Plus"
+query = "Apple Wired Keyboard with Numeric Keypad MB110LL/B [NEWEST VERSION]"
 
 # Run the same text processing for the input text
 query_bow = dictionary.doc2bow(tokenizer.tokenize(' '.join([porter_stemmer.stem(word.lower()) for word in query.split() if word not in stopwords])))

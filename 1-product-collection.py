@@ -34,10 +34,10 @@ cache = IdCache(pd_db)
 
 api = amazonproduct.API(locale='us')
 # Initialize the starting keywords
-keywordlist = ['watch', 'Amazonbasic', 'large', 'cushion', 'pad', 'bag', 'man', 'women', 'kid', 'rocket', 'pet', 'car',
-               'office', 'face', 'leg', 'home', 'cleaning', 'food', 'fruit', 'outdoor', 'indoor', 'usa', 'china',
-               'business', 'TV', 'key', 'rome', 'english', 'map', 'math', 'computer', 'kitchen', 'pet', 'Gift',
-               'Beauty', 'Philips', 'Appliances', 'Accessories', 'american']
+keywordlist = ['watch', 'GPS', 'twin', 'Bucket', 'ASUS', 'bag', 'LED', 'Balm', 'Conditioner', 'windows', 'Bicycle', 'car',
+               'office', 'face', 'leg', 'hair', 'Ointment', 'VERSION', 'USB', 'Bluetooth', 'Android', 'Battery',
+               'Keyboard', 'TV', 'IPS', 'bose', 'Closet', 'Colgate', 'Titanium', 'computer', 'Inkjet', 'pet', 'Gigabit',
+               'Beauty', 'Cooker', 'Camera', 'pump', 'Mixer', 'Macbook', 'headset', 'phone', 'HTC']
 keyword = random.sample(keywordlist, 1)[0]
 count = 0
 
@@ -125,7 +125,8 @@ while True:
         del api
         api = amazonproduct.API(locale='us')
         print 'TIMEOUT ERROR'
-        time.sleep(100)
+        time.sleep(50)
+        keyword = random.sample(keywordlist, 1)[0]
     count += 1
 
 

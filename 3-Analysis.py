@@ -3,7 +3,7 @@
 
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem.porter import PorterStemmer
-import pickle
+import cPickle as pickle
 import sys
 
 
@@ -13,11 +13,13 @@ dictionary = pickle.load(open("dictionary.obj", "r"))
 cat_list = pickle.load(open("cat_list.obj", "r"))
 
 # Input the new text
-query = "Apple MacBook Air MJVE2LL/A 13.3-Inch Laptop (128 GB) NEWEST VERSION"
-query = sys.argv[1]
+# query = "Apple Wired Keyboard with Numeric Keypad MB110LL/B [NEWEST VERSION]"
+query = unicode(sys.argv[1], "UTF-8")
 
+# Run the same text processing for the input text
 tokenizer = RegexpTokenizer(r'\w+')
 porter_stemmer = PorterStemmer()
+# Just the stopwords in nltk
 stopwords = [u'i',
              u'me',
              u'my',
@@ -145,8 +147,6 @@ stopwords = [u'i',
              u'don',
              u'should',
              u'now']
-
-# Run the same text processing for the input text
 query_bow = dictionary.doc2bow(tokenizer.tokenize(
     ' '.join([porter_stemmer.stem(word.lower()) for word in query.split() if word not in stopwords])))
 
@@ -159,5 +159,8 @@ sims = index[query_lsi]
 # Sort the result
 sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
-print cat_list[[i[0] for i in sort_sims[0:10]]]
-print cat_list[[i[0] for i in sort_sims[0:5]]].value_counts().index[0]
+# The selecting strategy is to pick out the one with the largest number in the top 5
+if len(cat_list[[i[0] for i in sort_sims[0:5]]].value_counts()) == 5:
+    print cat_list[sort_sims[0][0]].value_counts().index[0]
+else:
+    print cat_list[[i[0] for i in sort_sims[0:5]]].value_counts().index[0]
