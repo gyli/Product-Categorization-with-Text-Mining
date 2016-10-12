@@ -160,7 +160,7 @@ sims = index[query_lsi]
 sort_sims = sorted(enumerate(sims), key=lambda item: -item[1])
 
 # The selecting strategy is to pick out the one with the largest number in the top 5
-if len(cat_list[[i[0] for i in sort_sims[0:5]]].value_counts()) == 5:
-    print cat_list[sort_sims[0][0]].value_counts().index[0]
-else:
+if cat_list[[i[0] for i in sort_sims[0:5]]].value_counts()[0] > 3:
     print cat_list[[i[0] for i in sort_sims[0:5]]].value_counts().index[0]
+else:
+    print cat_list[sort_sims[0][0]]

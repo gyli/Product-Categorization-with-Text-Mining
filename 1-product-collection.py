@@ -34,10 +34,10 @@ cache = IdCache(pd_db)
 
 api = amazonproduct.API(locale='us')
 # Initialize the starting keywords
-keywordlist = ['watch', 'GPS', 'twin', 'Bucket', 'ASUS', 'bag', 'LED', 'Balm', 'Conditioner', 'windows', 'Bicycle', 'car',
-               'office', 'face', 'leg', 'hair', 'Ointment', 'VERSION', 'USB', 'Bluetooth', 'Android', 'Battery',
-               'Keyboard', 'TV', 'IPS', 'bose', 'Closet', 'Colgate', 'Titanium', 'computer', 'Inkjet', 'pet', 'Gigabit',
-               'Beauty', 'Cooker', 'Camera', 'pump', 'Mixer', 'Macbook', 'headset', 'phone', 'HTC']
+keywordlist = ['Microsoft', 'GPS', 'Security', 'Tourister', 'Filter', 'Storage', 'intel', 'Conditioner', 'windows', 'Bicycle',
+               'Foldable', 'TB', 'Remote', 'hair', 'Cutlery', 'Inch', 'USB', 'Bluetooth', 'Android', 'Vacuum',
+               'Quart', 'TV', 'IPS', 'bose', 'Closet', 'Colgate', 'Dishwasher', 'Box', 'Inkjet', 'Nikon', 'Gigabit',
+               'Beauty', 'Cooker', 'Camera', 'pump', 'Mixer', 'Macbook', 'Language', 'Pack', 'HTC']
 keyword = random.sample(keywordlist, 1)[0]
 count = 0
 
@@ -77,6 +77,7 @@ while True:
     root_cat_list = {}
     leaf_cat_list = {}
     try:
+        print 'Keyword: ' + keyword
         for item in api.item_search('All', Keywords=keyword):
             pd_asin = unicode(item.ASIN)
             pd_title = unicode(item.ItemAttributes.Title)
@@ -88,7 +89,7 @@ while True:
                 if root_cat_list.get(pd_cat) and leaf_cat_list.get(pd_cat):
                     pd_root_cat_id = root_cat_list.get(pd_cat)
                     pd_leaf_cat_id = leaf_cat_list.get(pd_cat)
-                    print 'Get ids from cache'
+                    print 'Get id from cache'
                 # If not in cache, get the id through browsenode API and store them into cache
                 else:
                     cat_id = get_cat_id(pd_asin)
@@ -97,7 +98,7 @@ while True:
                         pd_leaf_cat_id = cat_id.get('leaf')
                         root_cat_list[pd_cat] = pd_root_cat_id
                         leaf_cat_list[pd_cat] = pd_leaf_cat_id
-                        print 'Get ids through API'
+                        print 'Get id through API'
                     # Skip it if no category id returns
                     else:
                         print 'Cannot get root category'
